@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <style>
+    body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Hide overflow to prevent scroll bars */
+    background-color: #f4f4f4; /* Background color */
+    
+  }
+
+  header {
+    background: linear-gradient(rgba(169, 169, 169, 0.9), rgba(128, 128, 128, 0.7));
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 15px;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 100px;
+    background-color: #ff7200;
+    display: block;
+    font-weight: bold;
+  }
+
+  nav a:hover {
+    background-color: #000000;
+  }
+
+  header:hover {
+    background: linear-gradient(rgb(255, 255, 255), rgba(0, 0, 0, 0.8));
+  }
+
+  nav a.active {
+    background-color: #000000;
+  }
+
+  #menu-icon {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 200px;
+  }
+
+  @media screen and (max-width: 600px) {
+    nav {
+      display: none;
+      position: absolute;
+      top: 100px;
+      left: 60px;
+      background-color: #ff7200;
+      z-index: 999;
+    }
+
+    #menu-icon {
+      display: block;
+    }
+
+    header {
+      display: block;
+    }
+  }
+
+  .contact-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+  }
+
+  .contact-container h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+  }
+
+  .contact-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+
+  .contact-form textarea {
+    resize: vertical;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: #ff7200;
+  }
+
+  .contact-form button {
+    background-color: #ff7200;
+    color: #fff;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+  }
+
+  .contact-form button:hover {
+    background-color: #000;
+  }
+
+  .contact-form .fa {
+    margin-right: 10px;
+  }
+
+  .success-message,
+  .error-message {
+    margin-top: 20px;
+    font-size: 1.2em;
+  }
+
+  /* Background Music */
+  #audio-background {
+    display: none; /* Hide audio player */
+  }
+  </style>
+</head>
+<body>
+  <img src="menu.png" alt="Menu" id="menu-icon">
+
+  <header>
+    <nav>
+      
+      <a href="about.html" style="margin-top: 100px">About</a>
+      <a href="product.html">Products</a>
+      <a href="main.html">Home</a>
+      <a href="customization.html">Customaization</a>
+    </nav>
+  </header>
+  
+  <div class="contact-container">
+    <h2>Contact Us</h2>
+    <form class="contact-form" id="contactForm">
+      <input type="text" id="name" placeholder="Your Name">
+      <input type="email" id="email" placeholder="Your Email">
+      <textarea id="message" placeholder="Your Message"></textarea>
+      <button type="button" onclick="submitForm()">Submit <i class="fas fa-paper-plane"></i></button>
+    </form>
+    <div id="successMessage" class="success-message"></div>
+    <div id="errorMessage" class="error-message"></div>
+  </div>
+
+  <script>
+    function submitForm() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      if (name && email && message) {
+        // Send form data to the server
+        fetch('/submit-form', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, message }),
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log(data);
+          document.getElementById('successMessage').textContent = 'Message sent successfully!';
+          document.getElementById('errorMessage').textContent = '';
+          document.getElementById('name').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('message').value = '';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('successMessage').textContent = '';
+          document.getElementById('errorMessage').textContent = 'Failed to send message.';
+        });
+      } else {
+        document.getElementById('successMessage').textContent = '';
+        document.getElementById('errorMessage').textContent = 'Please fill in all fields.';
+      }
+    }
+
+
+    
+  </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const menuIcon = document.getElementById('menu-icon');    
+        const header = document.querySelector('header');
+        const nav = document.querySelector('nav');
+  
+        menuIcon.addEventListener('click', function () {
+          header.style.display = 'block';
+          nav.style.display = 'flex';
+        });
+  
+        menuIcon.addEventListener('mouseleave', function () {
+          if (!header.matches(':hover')) {
+            header.style.display = 'none';
+            nav.style.display = 'none';
+          }
+        });
+  
+        header.addEventListener('mouseleave', function () {
+          if (!header.matches(':hover')) {
+            header.style.display = 'none';
+            nav.style.display = 'none';
+          }
+        });
+  
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 600) {
+            nav.style.display = 'flex';
+            header.style.display = 'block';
+          } else {
+            nav.style.display = 'none';
+            header.style.display = 'none';
+          }
+        });
+      });
+    </script>
+<script src="server.js"></script>
+</body>
+</html>
